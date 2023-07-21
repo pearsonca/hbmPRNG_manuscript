@@ -6,14 +6,17 @@
 # these variables define the filestructure for recording results
 # n.b.: these are relative to the overall project root, not *this* directory
 REFDIR ?= output
+BINDIR := $(REFDIR)/build
 RUNDIR := $(REFDIR)/simres
 OUTDIR := $(REFDIR)/digest
 FIGDIR := $(REFDIR)/figure
+DIRS := $(BINDIR) $(RUNDIR) $(OUTDIR) $(FIGDIR)
 
-setup: cfepi/package $(RUNDIR) $(OUTDIR) $(FIGDIR)
+setup: cfepi/package $(DIRS)
 	@echo "Setup task:"
 	@echo "Ensured 'cfepi' available."
 	@echo "Ensured folder structure created:"
+	@echo "  - $(BINDIR): where compiled objects go"
 	@echo "  - $(RUNDIR): where simulation runs data will be collected"
 	@echo "  - $(OUTDIR): where run data will be consolidated"
 	@echo "  - $(FIGDIR): where figure data will be stored"
@@ -22,7 +25,7 @@ cfepi/package: .FORCE
 	@echo "If necessary, initializing/updating submodule 'cfepi' ..."
 	git submodule update --init --recursive
 
-$(RUNDIR) $(OUTDIR) $(FIGDIR):
+$(DIRS):
 	@echo "Creating $@ directory ..."
 	@mkdir -p $@
 

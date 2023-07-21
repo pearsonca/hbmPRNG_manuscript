@@ -4,7 +4,7 @@ This repository provides the analysis associated with TODO-PREPRINT-DOI. Briefly
 
 # Quick Start
 
-Ensure R, make, and C/C++ toolchain are available. Warning: this will install R packages when not available at sufficient version.
+Ensure R, make, git, and C/C++ toolchain are available. Warning: this will install R packages when not available at sufficient version.
 
 ```
 make setup      # will take care of e.g. syncing subrepository to K et al approach, building all sources
@@ -15,7 +15,15 @@ make illustrate # generate the analysis figures
 
 # Organization
 
-TODO, file structure, naming conventions
+This repository is organized with a [`make`](https://www.gnu.org/software/make/manual/html_node/index.html) workflow. The single entry point to overall workflow is the `Makefile` at the root directory. Sub-step workflow `make` files are in `makefiles/`.
+
+The source for the previously proposed approach by [Kaminsky et al](https://doi.org/10.1098/rstb.2018.0279) is contained via git submodule in `cfepi/`.
+
+The simulation source for this reiteration of the model is contained in `src/`, as is the hashing function used XYZ, a specialization of the XYZ code included in the [SMHasher3](https://gitlab.com/fwojcik/smhasher3) hash-function library and testing suite.
+
+Results parsing and figure generation are accomplished with R, using [`data.table`](https://rdatatable.gitlab.io/data.table/) and [`ggplot2`](https://ggplot2.tidyverse.org/). All R scripts are in the `R/` directory, subdivided by `R/extract`, `R/transform`, and `R/visualize`.
+
+Intermediate and final outputs are collected into an output folder (by default, `output/` in the root project directory - adjustable with a `local.makefile` or command line argument; see `makefiles/setup.makefile` comments), subdivided into compiled code (`build/`), simulation results (`simres/`), extracted-and-transformed results (`digest/`), and visualizations (`figure/`). Simulation results are generally plaintext, comma-separated value files. The ET'd files are generally R serialization binary files. Figures are portable network graphics (png) format by default (adjustable with a `local.makefile` or command line argument; see `makefiles/visualize.makefile` comments).
 
 # Setup
 
